@@ -4,10 +4,10 @@ Semesteraufgabe im Modul "Moderne Softwareentwicklung"
 
 
 
-## Grundlegende Git-Befehle – Spickzettel & Referenz
-
-Eine strukturierte Übersicht der wichtigsten Git-Befehle.
+Grundlegende Git-Befehle – Spickzettel & Referenz
 ---
+Eine strukturierte Übersicht der wichtigsten Git-Befehle.
+
 ### Setup
 
 | Befehl | Beschreibung |
@@ -95,3 +95,27 @@ Quellen:
 * [git_cheat_sheet](https://education.github.com/git-cheat-sheet-education.pdf)
 * Edlich, Stefan (2026): "Softwaretechnik". VFH-Online-Modul. Version 2026.
 ---
+
+
+Nützliche Git-Tools und Plattformen
+---
+Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im Kontext von Git betrachtet werden können.
+
+### Plattformen
+
+| Bezeichung | Beschreibung | Link |
+| :--- | :--- | :--- | 
+| `GitHub` | Der weltweite Marktführer mit riesiger Community, integriertem Issue-Tracking, Pull Requests und GitHub Actions für CI/CD | [Link](https://github.com/) |
+| `GitLab` | Eine umfassende DevSecOps-Plattform mit starkem Fokus auf integriertes CI/CD, Wikis und Projektmanagement (auch als Self-Hosting-Variante beliebt) | [Link](https://about.gitlab.com/de-de/) |
+| `Bitbucket` | Die Plattform von Atlassian, die sich nahtlos mit Jira und Confluence verknüpft. | [Link](https://bitbucket.org/) |
+| `Gitea` |  Sehr leichte, quelloffene Git-Hosting-Lösungen, die sich hervorragend auf einem eigenen Server (Self-Hosting) betreiben lassen. | [Link](https://about.gitea.com/) |
+
+### Tools
+
+| Bezeichung | Beschreibung | Link |
+| :--- | :--- | :--- | 
+| `GitKraken` | Ein sehr eleganter, plattformübergreifender Client mit starker visueller Historie, integriertem Merge-Konflikt-Editor und guter Issue-Anbindung. | [Link](https://gitkraken.com/) |
+| `Sourcetree` | Ein kostenloser Client von Atlassian mit guter Bitbucket- und Jira-Integration sowie übersichtlichen Diff-Ansichten. | [Link](https://www.sourcetreeapp.com/) |
+| `GitHub Desktop` | Einsteigerfreundlicher, kostenloser Offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
+
+Weiter gibt es für die verschiedenen IDEs Erweiterungen, oder bereits bestehende Integrationen, die gut genutzt werden können.
