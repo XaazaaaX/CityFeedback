@@ -3,6 +3,7 @@
 Semesteraufgabe im Modul "Moderne Softwareentwicklung"
 
 ## Was ist Git und warum sollte es verwendet werden?
+
 Git ist eine Software zur Versionierung von Dateien, die es Teams ermöglicht, zeitgleich an einem Projekt und sogar gleichen Projektdateien zu arbeiten und diese im Anschluss zusammenzuführen.
 
 Werden die Projektdateien über Git verwaltet, können Teammitglieder auf separaten (Feature-)Branches arbeiten und diese anschließend auf einem Haupt-Branch zusammenführen. Die so entstehenden Unterschiede (gelöschte, geänderte, hinzugefügte Zeilen) sind klar erkennbar. Ggf. entstehende Merge-Konflikte können kontrolliert behoben werden.
@@ -124,6 +125,14 @@ Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im
 | `GitHub Desktop` | Einsteigerfreundlicher, kostenloser Offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
 
 Weiter gibt es für die verschiedenen IDEs Erweiterungen, oder bereits bestehende Integrationen, die gut genutzt werden können.
+
+## Branches und der Umgang mit Merge-Konflikten
+
+Branches erlauben es, an verschiedenen Aufgaben gleichzeitig zu arbeiten. Jeder Branch kann eigene commits und damit eigene Änderungen tragen.
+Typischerweise bestehen Projekte aus einem Haupt-Branch (main oder master), auf dem immer das stabile, funktionierende Programm laufen sollte, sowie Branches für neue Features und Bugfixes.
+Sobald ein Bugfix oder ein neues Feature auf einem separaten Branch fertig ist und ausreichend getestet wurde, kann über eine Pull-Request die Anpassung in das Haupt-Projekt übernommen werden.
+
+Sollte in der Zwischenzeit eine Datei sowohl im Haupt- als auch im Feature-Branch geändert worden sein, kommt es bei einem Pull zu einem Merge-Konflikt. Zum auflösen von Merge-Konflikten werden alle Konflikte verglichen und jeweils entschieden, welche der Änderungen behalten werden soll.
 
 
 ## Git mit IntelliJ benutzen:
