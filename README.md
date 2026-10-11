@@ -1,2 +1,97 @@
 # CityFeedback
 Semesteraufgabe im Modul "Moderne Softwareentwicklung"
+
+
+
+
+## Grundlegende Git-Befehle – Spickzettel & Referenz
+
+Eine strukturierte Übersicht der wichtigsten Git-Befehle.
+---
+### Setup
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `git config --global user.name [name]` | Schreibt den Usernamen in der Git-Konfiguration. |
+| `git config --global user.email [email]` | Hiermit wird die Mail-Adresse des Users in der Git-Konfiguration hinterlegt. |
+
+
+---
+### 1. Projektinitialisierung & Hilfe
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `git init` | Initialisiert ein neues Git-Repository im aktuellen Verzeichnis (erstellt `.git`). |
+| `git init <ordner>` | Erstellt ein neues Verzeichnis und initialisiert darin ein Repository. |
+| `git clone <url>` | Klont ein bestehendes Remote-Repository als lokale Arbeitskopie inklusive Historie. |
+| `git help <befehl>` | Öffnet die offizielle Dokumentation des jeweiligen Befehls im Browser. |
+
+---
+### 2. Status prüfen & Änderungen analysieren
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `git status` | Zeigt den aktuellen Zustand an (unverfolgte, geänderte und gestagete Dateien). |
+| `git diff` | Zeigt ungestagete Änderungen im Arbeitsverzeichnis gegenüber dem Index an. |
+| `git diff --cached` | Vergleicht die Staging Area mit dem letzten Commit (`HEAD`). |
+| `git diff HEAD` | Zeigt alle lokalen Änderungen (gestaged und ungestaged) gegenüber dem letzten Commit. |
+
+---
+### 3. Änderungen stagen & committen
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `git add <datei>` | Fügt eine Datei zur Staging Area hinzu. |
+| `git add .` | Nimmt alle geänderten und neuen Dateien des aktuellen Ordners in den Index auf. |
+| `git add -i` | Startet den interaktiven Modus zum gezielten Hinzufügen von Änderungen. |
+| `git commit -m "<nachricht>"` | Erstellt einen neuen Snapshot aus dem Index mit einer Commit-Nachricht. |
+| `git commit -a -m "<nachricht>"` | Überspringt `git add` für bereits versionierte, geänderte Dateien und committet sofort. |
+| `git commit --amend` | Ändert den unmittelbar vorherigen Commit (Nachricht oder hinzugefügte Dateien nachträglich korrigieren). |
+
+---
+### 4. Branching & Merging
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `git branch` | Listet alle lokalen Zweige auf (der aktive Branch ist markiert). |
+| `git branch <name>` | Erstellt einen neuen Branch. |
+| `git checkout -b <name>` | Erstellt einen neuen Branch und wechselt sofort dorthin. |
+| `git switch <name>` | Wechselt zum angegebenen Branch. |
+| `git merge <branch>` | Führt den angegebenen Branch in den aktuell aktiven Zweig zusammen. |
+| `git branch -d <name>` | Löscht einen bereits zusammengeführten lokalen Zweig. |
+
+---
+### 5. Remote-Synchronisation
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `git remote add <name> <url>` | Verknüpft das lokale Repository mit einem Remote-Server (üblicherweise `origin`). |
+| `git push -u origin <branch>` | Überträgt lokale Commits auf den Server und setzt den Upstream-Zweig. |
+| `git push` | Sendet neue Commits an das verknüpfte Remote-Repository. |
+| `git fetch` | Ruft neue Commits vom Remote-Server ab, ohne sie in den Arbeitszweig zu mergen. |
+| `git pull` | Lädt Server-Änderungen herunter und führt sie direkt im aktuellen Branch zusammen (`fetch` + `merge`). |
+
+---
+### 6. Verlauf & Historie einsehen
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `git log` | Zeigt die vollständige Commit-Historie (Autor, Datum, Hash, Nachricht). |
+| `git log --pretty=oneline` | Kompakte Darstellung: Jeder Commit wird in einer einzigen Zeile ausgegeben. |
+| `git log --stat` | Zeigt zusätzlich Statistiken über geänderte Zeilen und Dateien je Commit an. |
+| `git log -p -2` | Zeigt die Diffs (Patch) der letzten 2 Commits detailliert an. |
+
+---
+### 7. Korrekturen & Dateioperationen
+
+| Befehl | Beschreibung |
+| :--- | :--- |
+| `git reset HEAD <datei>` | Entfernt eine Datei aus der Staging Area (Inhalt bleibt im Arbeitsverzeichnis erhalten). |
+| `git rm <datei>` | Löscht eine Datei aus dem Dateisystem und aus dem Index. |
+| `git rm --cached <datei>` | Entfernt die Datei nur aus dem Git-Tracking, behält sie aber lokal auf der Festplatte. |
+| `git mv <alt> <neu>` | Verschiebt oder benennt eine Datei um und aktualisiert den Index automatisch. |
+
+Quellen:
+* [git_cheat_sheet](https://education.github.com/git-cheat-sheet-education.pdf)
+* Edlich, Stefan (2026): "Softwaretechnik". VFH-Online-Modul. Version 2026.
+---
