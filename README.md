@@ -192,3 +192,15 @@ Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im
 | `GitHub Desktop` | Einsteigerfreundlicher, kostenloser Offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
 
 Weiter gibt es für die verschiedenen IDEs Erweiterungen, oder bereits bestehende Integrationen, die gut genutzt werden können.
+
+---
+
+Die Übung 1 wurde zusammen im Discord erarbeitet. Die einzelnen Kapitel wurde nuntereinander aufgeteilt und anschließend gemeinsam reviwed.
+
+Bearbeitung der Kapitel:
+
+- Was ist Git und warum sollte es verwendet werden? (Aileen Krause)
+- Grundlegende Git-Befehle (Kevin Schönau)
+- Branches und ihre Nutzung (Aileen Krause)
+- Git mit IntelliJ/PyCharm benutzen (Benito Ernst)
+- Nützliche Git-Tools und Platformen (Kevin Schönau)
