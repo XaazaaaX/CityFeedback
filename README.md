@@ -102,30 +102,6 @@ Quellen:
 * Edlich, Stefan (2026): "Softwaretechnik". VFH-Online-Modul. Version 2026.
 ---
 
-
-Nützliche Git-Tools und Plattformen
----
-Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im Kontext von Git betrachtet werden können.
-
-### Plattformen
-
-| Bezeichung | Beschreibung | Link |
-| :--- | :--- | :--- | 
-| `GitHub` | Der weltweite Marktführer mit riesiger Community, integriertem Issue-Tracking, Pull Requests und GitHub Actions für CI/CD | [Link](https://github.com/) |
-| `GitLab` | Eine umfassende DevSecOps-Plattform mit starkem Fokus auf integriertes CI/CD, Wikis und Projektmanagement (auch als Self-Hosting-Variante beliebt) | [Link](https://about.gitlab.com/de-de/) |
-| `Bitbucket` | Die Plattform von Atlassian, die sich nahtlos mit Jira und Confluence verknüpft. | [Link](https://bitbucket.org/) |
-| `Gitea` |  Sehr leichte, quelloffene Git-Hosting-Lösungen, die sich hervorragend auf einem eigenen Server (Self-Hosting) betreiben lassen. | [Link](https://about.gitea.com/) |
-
-### Tools
-
-| Bezeichung | Beschreibung | Link |
-| :--- | :--- | :--- | 
-| `GitKraken` | Ein sehr eleganter, plattformübergreifender Client mit starker visueller Historie, integriertem Merge-Konflikt-Editor und guter Issue-Anbindung. | [Link](https://gitkraken.com/) |
-| `Sourcetree` | Ein kostenloser Client von Atlassian mit guter Bitbucket- und Jira-Integration sowie übersichtlichen Diff-Ansichten. | [Link](https://www.sourcetreeapp.com/) |
-| `GitHub Desktop` | Einsteigerfreundlicher, kostenloser Offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
-
-Weiter gibt es für die verschiedenen IDEs Erweiterungen, oder bereits bestehende Integrationen, die gut genutzt werden können.
-
 ## Branches und der Umgang mit Merge-Konflikten
 
 Branches erlauben es, an verschiedenen Aufgaben gleichzeitig zu arbeiten. Jeder Branch kann eigene commits und damit eigene Änderungen tragen.
@@ -193,3 +169,26 @@ IntelliJ zeigt daraufhin die zu übertragenden Commits an. Mit einem weiteren Kl
 Wichtig: Ein Push führt nicht automatisch einen Pull aus. Falls zwischenzeitlich Änderungen von anderen Personen in das Remote-Repository hochgeladen wurden, kann es notwendig sein, diese zunächst über Pull abzurufen und in den eigenen Branch zu integrieren. IntelliJ unterstützt diesen Vorgang ebenfalls über die grafische Benutzeroberfläche.
 
 <img width="1628" height="991" alt="Image" src="https://github.com/user-attachments/assets/1d3af5c3-10db-46d1-a9f9-de45bfba6f35" />
+
+## Nützliche Git-Tools und Plattformen
+---
+Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im Kontext von Git betrachtet werden können.
+
+### Plattformen
+
+| Bezeichung | Beschreibung | Link |
+| :--- | :--- | :--- | 
+| `GitHub` | Der weltweite Marktführer mit riesiger Community, integriertem Issue-Tracking, Pull Requests und GitHub Actions für CI/CD | [Link](https://github.com/) |
+| `GitLab` | Eine umfassende DevSecOps-Plattform mit starkem Fokus auf integriertes CI/CD, Wikis und Projektmanagement (auch als Self-Hosting-Variante beliebt) | [Link](https://about.gitlab.com/de-de/) |
+| `Bitbucket` | Die Plattform von Atlassian, die sich nahtlos mit Jira und Confluence verknüpft. | [Link](https://bitbucket.org/) |
+| `Gitea` |  Sehr leichte, quelloffene Git-Hosting-Lösungen, die sich hervorragend auf einem eigenen Server (Self-Hosting) betreiben lassen. | [Link](https://about.gitea.com/) |
+
+### Tools
+
+| Bezeichung | Beschreibung | Link |
+| :--- | :--- | :--- | 
+| `GitKraken` | Ein sehr eleganter, plattformübergreifender Client mit starker visueller Historie, integriertem Merge-Konflikt-Editor und guter Issue-Anbindung. | [Link](https://gitkraken.com/) |
+| `Sourcetree` | Ein kostenloser Client von Atlassian mit guter Bitbucket- und Jira-Integration sowie übersichtlichen Diff-Ansichten. | [Link](https://www.sourcetreeapp.com/) |
+| `GitHub Desktop` | Einsteigerfreundlicher, kostenloser Offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
+
+Weiter gibt es für die verschiedenen IDEs Erweiterungen, oder bereits bestehende Integrationen, die gut genutzt werden können.
