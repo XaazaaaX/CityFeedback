@@ -1,4 +1,5 @@
 # CityFeedback
+
 Semesteraufgabe im Modul "Moderne Softwareentwicklung"
 
 ## Was ist Git und warum sollte es verwendet werden?
