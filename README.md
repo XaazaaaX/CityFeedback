@@ -275,19 +275,19 @@ Der `main`-Branch ist geschützt (protected) und nimmt keine direkten Pushes von
 
 **Erklärungen zu den einzelnen Schritten:**
 
-**Linting**
+**Linting:**
 Im ersten Schritt wird der Quellcode statisch auf Stil- und Formatierungsfehler sowie auf typische Fehlerquellen geprüft. So wird ein einheitlicher Codestil im gesamten Team sichergestellt und einfache Fehler werden frühzeitig erkannt, noch bevor Tests oder Builds ausgeführt werden. Schlägt das Linting fehl, bricht die Pipeline ab.
 
-**Tests**
+**Tests:**
 Anschließend werden die automatisierten Tests ausgeführt, insbesondere Unit- und gegebenenfalls Integrationstests. Sie stellen sicher, dass bestehende Funktionalität durch neue Änderungen nicht beeinträchtigt wird. Nur wenn alle Tests erfolgreich sind, wird die Pipeline fortgesetzt. Optional kann hier zusätzlich die Testabdeckung (Code Coverage) erfasst und ausgewertet werden.
 
-**Build**
+**Build:**
 Im Build-Schritt wird die Anwendung kompiliert bzw. gebündelt und in eine auslieferbare Form gebracht. Dabei wird überprüft, ob sich der aktuelle Stand fehlerfrei bauen lässt. Die erzeugten Build-Artefakte können für die folgenden Schritte weiterverwendet werden.
 
-**Commitlinting & Semantic Release**
+**Commitlinting & Semantic Release:**
 Per Commitlinting wird geprüft, ob die Commit-Nachrichten einem festgelegten Format entsprechen, in der Regel der Conventional-Commits-Spezifikation (z. B. `feat:`, `fix:`, `chore:`). Auf dieser Grundlage ermittelt Semantic Release automatisch die nächste Versionsnummer nach Semantic Versioning (Major, Minor, Patch), erstellt einen Git-Tag und generiert ein Changelog. Dieser Schritt wird nur auf dem `main`-Branch ausgeführt, sodass Releases ausschließlich aus geprüftem und gemergtem Code entstehen.
 
-**Docker Build & Image Registry**
+**Docker Build & Image Registry:**
 Abschließend wird aus der Anwendung ein Docker-Image gebaut und mit der durch Semantic Release ermittelten Versionsnummer getaggt. Das Image wird anschließend in die GitHub Container Registry hochgeladen. Von dort kann es für das Deployment in die jeweiligen Zielumgebungen bezogen werden. Da jedes Image eindeutig versioniert ist, sind Deployments jederzeit nachvollziehbar und lassen sich bei Bedarf auf eine frühere Version zurücksetzen.
 
 
