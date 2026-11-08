@@ -2,6 +2,19 @@
 
 Semesteraufgabe im Modul "Moderne Softwareentwicklung"
 
+## Inhaltsverzeichnis
+- [Übung 1: Einführung in Git](#übung-1-einführung-in-git)
+  - [Was ist Git und warum sollte es verwendet werden?](#was-ist-git-und-warum-sollte-es-verwendet-werden)
+  - [Grundlegende Git-Befehle – Spickzettel & Referenz](#grundlegende-git-befehle--spickzettel--referenz)
+  - [Branches und der Umgang mit Merge-Konflikten](#branches-und-der-umgang-mit-merge-konflikten)
+  - [Git mit IntelliJ benutzen](#git-mit-intellij-benutzen)
+  - [Nützliche Git-Tools und Plattformen](#nützliche-git-tools-und-plattformen)
+- [Übung 2: CI/CD Pipeline](#übung-2-cicd-pipeline)
+- [Übung 3: UML & OOD (DDD)](#übung-3-uml--ood-ddd)
+
+
+# Übung 1: Einführung in Git
+
 ## Was ist Git und warum sollte es verwendet werden?
 
 Git ist eine Software zur Versionierung von Dateien, die es Teams ermöglicht, zeitgleich an einem Projekt und sogar gleichen Projektdateien zu arbeiten und diese im Anschluss zusammenzuführen.
@@ -11,7 +24,7 @@ Werden die Projektdateien über Git verwaltet, können Teammitglieder auf separa
 Da jeder commit eine eindeutige Identifizierung hat, ist es möglich, die Historie eines Projekts nachzuvollziehen und notfalls zu einem früheren Projektstand zurückzukehren.
 
 ## Grundlegende Git-Befehle – Spickzettel & Referenz
----
+
 Eine strukturierte Übersicht der wichtigsten Git-Befehle.
 
 ### Setup
@@ -171,7 +184,6 @@ Wichtig: Ein Push führt nicht automatisch einen Pull aus. Falls zwischenzeitlic
 <img width="1628" height="991" alt="Image" src="https://github.com/user-attachments/assets/1d3af5c3-10db-46d1-a9f9-de45bfba6f35" />
 
 ## Nützliche Git-Tools und Plattformen
----
 Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im Kontext von Git betrachtet werden können.
 
 ### Plattformen
@@ -202,5 +214,15 @@ Bearbeitung der Kapitel:
 - Was ist Git und warum sollte es verwendet werden? (Aileen Krause)
 - Grundlegende Git-Befehle (Kevin Schönau)
 - Branches und ihre Nutzung (Aileen Krause)
-- Git mit IntelliJ/PyCharm benutzen (Benito Ernst)
+- Git mit IntelliJ benutzen (Benito Ernst)
 - Nützliche Git-Tools und Platformen (Kevin Schönau)
+
+---
+
+# Übung 2: CI/CD Pipeline
+
+Lorem Ipsum....
+
+# Übung 3: UML & OOD (DDD)
+
+Lorem Ipsum....
