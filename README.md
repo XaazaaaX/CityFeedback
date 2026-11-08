@@ -119,9 +119,9 @@ Quellen:
 
 Branches erlauben es, an verschiedenen Aufgaben gleichzeitig zu arbeiten. Jeder Branch kann eigene commits und damit eigene Änderungen tragen.
 Typischerweise bestehen Projekte aus einem Haupt-Branch (main oder master), auf dem immer das stabile, funktionierende Programm laufen sollte, sowie Branches für neue Features und Bugfixes.
-Sobald ein Bugfix oder ein neues Feature auf einem separaten Branch fertig ist und ausreichend getestet wurde, kann über eine Pull-Request die Anpassung in das Haupt-Projekt übernommen werden.
+Sobald ein Bugfix oder ein neues Feature auf einem separaten Branch fertig ist und ausreichend getestet wurde, kann über einen Pull-Request die Anpassung in das Haupt-Projekt übernommen werden.
 
-Sollte in der Zwischenzeit eine Datei sowohl im Haupt- als auch im Feature-Branch geändert worden sein, kommt es bei einem Pull zu einem Merge-Konflikt. Zum auflösen von Merge-Konflikten werden alle Konflikte verglichen und jeweils entschieden, welche der Änderungen behalten werden soll.
+Sollte in der Zwischenzeit eine Datei sowohl im Haupt- als auch im Feature-Branch geändert worden sein, kommt es bei einem Pull zu einem Merge-Konflikt. Zum Auflösen von Merge-Konflikten werden alle Konflikte verglichen und jeweils entschieden, welche der Änderungen behalten werden soll.
 
 
 ## Git mit IntelliJ benutzen:
@@ -184,11 +184,11 @@ Wichtig: Ein Push führt nicht automatisch einen Pull aus. Falls zwischenzeitlic
 <img width="1628" height="991" alt="Image" src="https://github.com/user-attachments/assets/1d3af5c3-10db-46d1-a9f9-de45bfba6f35" />
 
 ## Nützliche Git-Tools und Plattformen
-Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im Kontext von Git betrachtet werden können.
+Dieser Bereich zeigt eine Übersicht verschiedener Tools und Plattformen, die im Kontext von Git betrachtet werden können.
 
 ### Plattformen
 
-| Bezeichung | Beschreibung | Link |
+| Bezeichnung | Beschreibung | Link |
 | :--- | :--- | :--- | 
 | `GitHub` | Der weltweite Marktführer mit riesiger Community, integriertem Issue-Tracking, Pull Requests und GitHub Actions für CI/CD | [Link](https://github.com/) |
 | `GitLab` | Eine umfassende DevSecOps-Plattform mit starkem Fokus auf integriertes CI/CD, Wikis und Projektmanagement (auch als Self-Hosting-Variante beliebt) | [Link](https://about.gitlab.com/de-de/) |
@@ -197,17 +197,17 @@ Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im
 
 ### Tools
 
-| Bezeichung | Beschreibung | Link |
+| Bezeichnung | Beschreibung | Link |
 | :--- | :--- | :--- | 
 | `GitKraken` | Ein sehr eleganter, plattformübergreifender Client mit starker visueller Historie, integriertem Merge-Konflikt-Editor und guter Issue-Anbindung. | [Link](https://gitkraken.com/) |
 | `Sourcetree` | Ein kostenloser Client von Atlassian mit guter Bitbucket- und Jira-Integration sowie übersichtlichen Diff-Ansichten. | [Link](https://www.sourcetreeapp.com/) |
-| `GitHub Desktop` | Einsteigerfreundlicher, kostenloser Offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
+| `GitHub Desktop` | Einsteigerfreundlicher, kostenloser offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
 
 Weiter gibt es für die verschiedenen IDEs Erweiterungen, oder bereits bestehende Integrationen, die gut genutzt werden können.
 
 ---
 
-Die Übung 1 wurde zusammen im Discord erarbeitet. Die einzelnen Kapitel wurde nuntereinander aufgeteilt und anschließend gemeinsam reviwed.
+Die Übung 1 wurde zusammen im Discord erarbeitet. Die einzelnen Kapitel wurden untereinander aufgeteilt und anschließend gemeinsam reviewt.
 
 Bearbeitung der Kapitel:
 
@@ -215,7 +215,7 @@ Bearbeitung der Kapitel:
 - Grundlegende Git-Befehle (Kevin Schönau)
 - Branches und ihre Nutzung (Aileen Krause)
 - Git mit IntelliJ benutzen (Benito Ernst)
-- Nützliche Git-Tools und Platformen (Kevin Schönau)
+- Nützliche Git-Tools und Plattformen (Kevin Schönau)
 
 ---
 
