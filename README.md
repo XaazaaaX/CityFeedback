@@ -10,6 +10,13 @@ Semesteraufgabe im Modul "Moderne Softwareentwicklung" WS 26/27
   - [Git mit IntelliJ benutzen](#git-mit-intellij-benutzen)
   - [Nützliche Git-Tools und Plattformen](#nützliche-git-tools-und-plattformen)
 - [Übung 2: CI/CD Pipeline](#übung-2-cicd-pipeline)
+  - [Grundlegende Konzepte](#grundlegende-konzepte)
+  - [Wie CI/CD unsere Softwareentwicklung unterstützt](#wie-cicd-unsere-softwareentwicklung-unterstützt)
+  - [Wahl der Plattform: GitHub Actions](#wahl-der-plattform-github-actions)
+  - [Repositorystruktur](#repositorystruktur)
+  - [Konzept: Aufbau der Pipeline](#konzept-aufbau-der-pipeline)
+  - [Konzept: Continuous Deployment](#konzept-continuous-deployment)
+  - [Bonus: Erweiterungen der Pipeline](#bonus-erweiterungen-der-pipeline)
 - [Übung 3: UML & OOD (DDD)](#übung-3-uml--ood-ddd)
 
 
