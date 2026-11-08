@@ -1,6 +1,26 @@
 # CityFeedback
 
-Semesteraufgabe im Modul "Moderne Softwareentwicklung"
+Semesteraufgabe im Modul "Moderne Softwareentwicklung" WS 26/27
+
+## Inhaltsverzeichnis
+- [Übung 1: Einführung in Git](#übung-1-einführung-in-git)
+  - [Was ist Git und warum sollte es verwendet werden?](#was-ist-git-und-warum-sollte-es-verwendet-werden)
+  - [Grundlegende Git-Befehle – Spickzettel & Referenz](#grundlegende-git-befehle--spickzettel--referenz)
+  - [Branches und der Umgang mit Merge-Konflikten](#branches-und-der-umgang-mit-merge-konflikten)
+  - [Git mit IntelliJ benutzen](#git-mit-intellij-benutzen)
+  - [Nützliche Git-Tools und Plattformen](#nützliche-git-tools-und-plattformen)
+- [Übung 2: CI/CD Pipeline](#übung-2-cicd-pipeline)
+  - [Grundlegende Konzepte](#grundlegende-konzepte)
+  - [Wie CI/CD unsere Softwareentwicklung unterstützt](#wie-cicd-unsere-softwareentwicklung-unterstützt)
+  - [Wahl der Plattform: GitHub Actions](#wahl-der-plattform-github-actions)
+  - [Repositorystruktur](#repositorystruktur)
+  - [Konzept: Aufbau der Pipeline](#konzept-aufbau-der-pipeline)
+  - [Konzept: Continuous Deployment](#konzept-continuous-deployment)
+  - [Bonus: Erweiterungen der Pipeline](#bonus-erweiterungen-der-pipeline)
+- [Übung 3: UML & OOD (DDD)](#übung-3-uml--ood-ddd)
+
+
+# Übung 1: Einführung in Git
 
 ## Was ist Git und warum sollte es verwendet werden?
 
@@ -11,7 +31,7 @@ Werden die Projektdateien über Git verwaltet, können Teammitglieder auf separa
 Da jeder commit eine eindeutige Identifizierung hat, ist es möglich, die Historie eines Projekts nachzuvollziehen und notfalls zu einem früheren Projektstand zurückzukehren.
 
 ## Grundlegende Git-Befehle – Spickzettel & Referenz
----
+
 Eine strukturierte Übersicht der wichtigsten Git-Befehle.
 
 ### Setup
@@ -106,9 +126,9 @@ Quellen:
 
 Branches erlauben es, an verschiedenen Aufgaben gleichzeitig zu arbeiten. Jeder Branch kann eigene commits und damit eigene Änderungen tragen.
 Typischerweise bestehen Projekte aus einem Haupt-Branch (main oder master), auf dem immer das stabile, funktionierende Programm laufen sollte, sowie Branches für neue Features und Bugfixes.
-Sobald ein Bugfix oder ein neues Feature auf einem separaten Branch fertig ist und ausreichend getestet wurde, kann über eine Pull-Request die Anpassung in das Haupt-Projekt übernommen werden.
+Sobald ein Bugfix oder ein neues Feature auf einem separaten Branch fertig ist und ausreichend getestet wurde, kann über einen Pull-Request die Anpassung in das Haupt-Projekt übernommen werden.
 
-Sollte in der Zwischenzeit eine Datei sowohl im Haupt- als auch im Feature-Branch geändert worden sein, kommt es bei einem Pull zu einem Merge-Konflikt. Zum auflösen von Merge-Konflikten werden alle Konflikte verglichen und jeweils entschieden, welche der Änderungen behalten werden soll.
+Sollte in der Zwischenzeit eine Datei sowohl im Haupt- als auch im Feature-Branch geändert worden sein, kommt es bei einem Pull zu einem Merge-Konflikt. Zum Auflösen von Merge-Konflikten werden alle Konflikte verglichen und jeweils entschieden, welche der Änderungen behalten werden soll.
 
 
 ## Git mit IntelliJ benutzen:
@@ -171,12 +191,11 @@ Wichtig: Ein Push führt nicht automatisch einen Pull aus. Falls zwischenzeitlic
 <img width="1628" height="991" alt="Image" src="https://github.com/user-attachments/assets/1d3af5c3-10db-46d1-a9f9-de45bfba6f35" />
 
 ## Nützliche Git-Tools und Plattformen
----
-Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im Kontext von Git betrachtet werden können.
+Dieser Bereich zeigt eine Übersicht verschiedener Tools und Plattformen, die im Kontext von Git betrachtet werden können.
 
 ### Plattformen
 
-| Bezeichung | Beschreibung | Link |
+| Bezeichnung | Beschreibung | Link |
 | :--- | :--- | :--- | 
 | `GitHub` | Der weltweite Marktführer mit riesiger Community, integriertem Issue-Tracking, Pull Requests und GitHub Actions für CI/CD | [Link](https://github.com/) |
 | `GitLab` | Eine umfassende DevSecOps-Plattform mit starkem Fokus auf integriertes CI/CD, Wikis und Projektmanagement (auch als Self-Hosting-Variante beliebt) | [Link](https://about.gitlab.com/de-de/) |
@@ -185,22 +204,122 @@ Dieser Bereich zeigt eine Übersicht verschiedenen Tools und Plattformen, die im
 
 ### Tools
 
-| Bezeichung | Beschreibung | Link |
+| Bezeichnung | Beschreibung | Link |
 | :--- | :--- | :--- | 
 | `GitKraken` | Ein sehr eleganter, plattformübergreifender Client mit starker visueller Historie, integriertem Merge-Konflikt-Editor und guter Issue-Anbindung. | [Link](https://gitkraken.com/) |
 | `Sourcetree` | Ein kostenloser Client von Atlassian mit guter Bitbucket- und Jira-Integration sowie übersichtlichen Diff-Ansichten. | [Link](https://www.sourcetreeapp.com/) |
-| `GitHub Desktop` | Einsteigerfreundlicher, kostenloser Offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
+| `GitHub Desktop` | Einsteigerfreundlicher, kostenloser offizieller Client von GitHub für einfache Workflows. | [Link](https://github.com/apps/desktop) |
 
 Weiter gibt es für die verschiedenen IDEs Erweiterungen, oder bereits bestehende Integrationen, die gut genutzt werden können.
 
 ---
 
-Die Übung 1 wurde zusammen im Discord erarbeitet. Die einzelnen Kapitel wurde nuntereinander aufgeteilt und anschließend gemeinsam reviwed.
+Die Übung 1 wurde zusammen im Discord erarbeitet. Die einzelnen Kapitel wurden untereinander aufgeteilt und anschließend gemeinsam reviewt.
 
 Bearbeitung der Kapitel:
 
 - Was ist Git und warum sollte es verwendet werden? (Aileen Krause)
 - Grundlegende Git-Befehle (Kevin Schönau)
 - Branches und ihre Nutzung (Aileen Krause)
-- Git mit IntelliJ/PyCharm benutzen (Benito Ernst)
-- Nützliche Git-Tools und Platformen (Kevin Schönau)
+- Git mit IntelliJ benutzen (Benito Ernst)
+- Nützliche Git-Tools und Plattformen (Kevin Schönau)
+
+---
+
+# Übung 2: CI/CD Pipeline
+
+
+## Grundlegende Konzepte
+**Continuous Integration (CI):** Alle Entwickler:innen integrieren ihre Änderungen häufig in einen gemeinsamen Branch. Jede Änderung wird automatisch gebaut und getestet. Ziel: Fehler früh finden, solange sie noch klein und leicht zu beheben sind, statt am Ende eines Sprints beim großen „Zusammenstecken“.
+
+**Continuous Delivery:** Der Code ist nach jedem erfolgreichen CI-Durchlauf jederzeit auslieferbar. Es entsteht automatisch ein fertiges Artefakt. Das eigentliche Deployment in Produktion wird aber noch manuell freigegeben.
+
+**Continuous Deployment:** Jede Änderung, die alle Prüfungen besteht, wird automatisch bis in Produktion ausgerollt, ohne manuellen Eingriff.
+
+**Zentrale Prinzipien**
+- Ein gemeinsames Repository als „Single Source of Truth“
+- Kleine, häufige Commits statt großer Merges
+- Jeder Commit löst automatisch Build und Tests aus
+- Ein roter Build hat höchste Priorität („Stop the line“)
+- Die Pipeline ist als Code im Repository versioniert
+
+## Wie CI/CD unsere Softwareentwicklung unterstützt
+
+**Ergebnisse unserer Diskussion:**
+ 
+- **Schnelles Feedback:** Nach jedem Push wissen wir innerhalb weniger Minuten, ob der Code baut und die Tests grün sind.
+- **Gleichbleibende Qualität:** Linting und Tests laufen für alle gleich, unabhängig davon, wer committet oder welche lokale Umgebung jemand hat („works on my machine“ entfällt).
+- **Geschützter Haupt-Branch:** Auf `main` kommt nur Code, der alle Prüfungen bestanden hat.
+- **Weniger manuelle Arbeit:** Versionierung, Release Notes und Docker-Images entstehen automatisch.
+- **Nachvollziehbarkeit:** Jedes Release ist mit Version, Git-Tag, Changelog und Image eindeutig einem Commit zugeordnet.
+- **Mehr Sicherheit beim Refactoring:** Die Tests sichern ab, dass bestehende Funktionen weiterhin funktionieren.
+
+## Wahl der Plattform: GitHub Actions
+
+Wir haben uns aus folgenden Gründen für **GitHub Actions** entschieden:
+- Unser Code liegt bereits auf GitHub: Pipeline, Pull Requests, Branch Protection, Releases und Container-Registry (GHCR) befinden sich an einem Ort.
+- Kein eigener Server notwendig (anders als bei Jenkins).
+- Der Marketplace bietet fertige Actions für Java, Node, Docker und semantic-release und müssen somit wenig selbst schreiben.
+- Die Ergebnisse der Pipeline erscheinen direkt im Pull Request und können als Pflicht-Checks für den Merge eingestellt werden.
+
+## Repositorystruktur
+
+In unserer Entwicklung sind ein `main`- und ein `dev`-Branch fest vorgesehen. Für einzelne Bereiche können zusätzlich Feature-Branches angelegt werden.
+
+Der `main`-Branch ist geschützt (protected) und nimmt keine direkten Pushes von Entwickler:innen an. Änderungen gelangen ausschließlich über Pull Requests auf den `main`-Branch. Auf den `dev`-Branch und die Feature-Branches dürfen beliebig viele Commits gepusht werden. Im Regelfall werden Änderungen über den `dev`-Branch in den `main`-Branch übernommen.
+
+## Konzept: Aufbau der Pipeline
+
+<img width="1632" height="1351" alt="Image" src="https://github.com/user-attachments/assets/44931d61-ed45-4173-948f-6f8761c55c7c" />
+
+
+**Erklärungen zu den einzelnen Schritten:**
+
+**Linting:**
+Im ersten Schritt wird der Quellcode statisch auf Stil- und Formatierungsfehler sowie auf typische Fehlerquellen geprüft. So wird ein einheitlicher Codestil im gesamten Team sichergestellt und einfache Fehler werden frühzeitig erkannt, noch bevor Tests oder Builds ausgeführt werden. Schlägt das Linting fehl, bricht die Pipeline ab.
+
+**Tests:**
+Anschließend werden die automatisierten Tests ausgeführt, insbesondere Unit- und gegebenenfalls Integrationstests. Sie stellen sicher, dass bestehende Funktionalität durch neue Änderungen nicht beeinträchtigt wird. Nur wenn alle Tests erfolgreich sind, wird die Pipeline fortgesetzt. Optional kann hier zusätzlich die Testabdeckung (Code Coverage) erfasst und ausgewertet werden.
+
+**Build:**
+Im Build-Schritt wird die Anwendung kompiliert bzw. gebündelt und in eine auslieferbare Form gebracht. Dabei wird überprüft, ob sich der aktuelle Stand fehlerfrei bauen lässt. Die erzeugten Build-Artefakte können für die folgenden Schritte weiterverwendet werden.
+
+**Commitlinting & Semantic Release:**
+Per Commitlinting wird geprüft, ob die Commit-Nachrichten einem festgelegten Format entsprechen, in der Regel der Conventional-Commits-Spezifikation (z. B. `feat:`, `fix:`, `chore:`). Auf dieser Grundlage ermittelt Semantic Release automatisch die nächste Versionsnummer nach Semantic Versioning (Major, Minor, Patch), erstellt einen Git-Tag und generiert ein Changelog. Dieser Schritt wird nur auf dem `main`-Branch ausgeführt, sodass Releases ausschließlich aus geprüftem und gemergtem Code entstehen.
+
+**Docker Build & Image Registry:**
+Abschließend wird aus der Anwendung ein Docker-Image gebaut und mit der durch Semantic Release ermittelten Versionsnummer getaggt. Das Image wird anschließend in die GitHub Container Registry hochgeladen. Von dort kann es für das Deployment in die jeweiligen Zielumgebungen bezogen werden. Da jedes Image eindeutig versioniert ist, sind Deployments jederzeit nachvollziehbar und lassen sich bei Bedarf auf eine frühere Version zurücksetzen.
+
+
+## Konzept: Continuous Deployment
+
+Bei Continuous Deployment wird jede Änderung, die alle Prüfungen der Pipeline besteht, automatisch ausgerollt. Für unser Projekt planen wir:
+
+- **Staging:** Jeder Merge in `dev` wird automatisch auf eine Testumgebung deployt.
+- **Produktion:** Ein Release aus `main` wird nach manueller Freigabe deployt (Continuous Delivery).
+- **Grundlage:** Die Pipeline erzeugt bereits versionierte Docker-Images in der GitHub Container Registry. Ein Deployment muss diese Images nur noch auf der Zielplattform starten.
+- **Rollback:** Durch die versionierten Images kann jederzeit auf eine frühere Version zurückgewechselt werden.
+
+**Mögliche Zielplattformen**
+
+- **VPS (Virtual Private Server) mit Docker:** Ein einzelner Server, auf dem die Container laufen. Günstig und einfach, Wartung und Sicherheit liegen aber bei uns.
+- **PaaS (Platform as a Service):** Ein Anbieter übernimmt Server, Betrieb und Skalierung, wir stellen nur die Docker-Images bereit. Sehr schnell eingerichtet und wenig Wartungsaufwand, dafür weniger Kontrolle, mit der Nutzung steigende Kosten und Abhängigkeit vom Anbieter.
+- **Kubernetes-Cluster mit Helm Charts (auf eigenen VPS oder als Managed Kubernetes):** Skalierbar und ausfallsicher, aber deutlich komplexer und für ein kleines Projekt eher überdimensioniert.
+
+Für den Anfang würde sich ein VPS, da er sich mit wenig Aufwand an die bestehende Pipeline anbinden lässt.
+
+## Bonus: Erweiterungen der Pipeline
+
+Wir erweitern den geforderten Rahmen um Linting, Commitlinting, Semantic Release und die Bereitstellung unserer Anwendung als Docker-Image.
+
+| Erweiterung | Werkzeug | Nutzen |
+|---|---|---|
+| Linting | --- | Einheitlicher Code-Stil, frühe Fehlererkennung |
+| Commitlinting | --- | Einheitliche Commit-Messages nach Conventional Commits |
+| Semantic Release | semantic-release | Automatische Versionierung, Git-Tags und Release Notes |
+| Docker-Image | Docker Buildx, GHCR | Versionierte Images als Grundlage für das Deployment |
+
+
+# Übung 3: UML & OOD (DDD)
+
+Lorem Ipsum....
