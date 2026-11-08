@@ -221,7 +221,97 @@ Bearbeitung der Kapitel:
 
 # Übung 2: CI/CD Pipeline
 
-Lorem Ipsum....
+
+## Grundlegende Konzepte
+**Continuous Integration (CI):** Alle Entwickler:innen integrieren ihre Änderungen häufig in einen gemeinsamen Branch. Jede Änderung wird automatisch gebaut und getestet. Ziel: Fehler früh finden, solange sie noch klein und leicht zu beheben sind, statt am Ende eines Sprints beim großen „Zusammenstecken“.
+
+**Continuous Delivery:** Der Code ist nach jedem erfolgreichen CI-Durchlauf jederzeit auslieferbar. Es entsteht automatisch ein fertiges Artefakt. Das eigentliche Deployment in Produktion wird aber noch manuell freigegeben.
+
+**Continuous Deployment:** Jede Änderung, die alle Prüfungen besteht, wird automatisch bis in Produktion ausgerollt, ohne manuellen Eingriff.
+
+**Zentrale Prinzipien**
+- Ein gemeinsames Repository als „Single Source of Truth“
+- Kleine, häufige Commits statt großer Merges
+- Jeder Commit löst automatisch Build und Tests aus
+- Ein roter Build hat höchste Priorität („Stop the line“)
+- Die Pipeline ist als Code im Repository versioniert
+
+## Wie CI/CD unsere Softwareentwicklung unterstützt
+
+**Ergebnisse unserer Diskussion:**
+ 
+- **Schnelles Feedback:** Nach jedem Push wissen wir innerhalb weniger Minuten, ob der Code baut und die Tests grün sind.
+- **Gleichbleibende Qualität:** Linting und Tests laufen für alle gleich, unabhängig davon, wer committet oder welche lokale Umgebung jemand hat („works on my machine“ entfällt).
+- **Geschützter Haupt-Branch:** Auf `main` kommt nur Code, der alle Prüfungen bestanden hat.
+- **Weniger manuelle Arbeit:** Versionierung, Release Notes und Docker-Images entstehen automatisch.
+- **Nachvollziehbarkeit:** Jedes Release ist mit Version, Git-Tag, Changelog und Image eindeutig einem Commit zugeordnet.
+- **Mehr Sicherheit beim Refactoring:** Die Tests sichern ab, dass bestehende Funktionen weiterhin funktionieren.
+
+## Wahl der Plattform: GitHub Actions
+
+Wir haben uns aus folgenden Gründen für **GitHub Actions** entschieden:
+- Unser Code liegt bereits auf GitHub: Pipeline, Pull Requests, Branch Protection, Releases und Container-Registry (GHCR) befinden sich an einem Ort.
+- Kein eigener Server notwendig (anders als bei Jenkins).
+- Der Marketplace bietet fertige Actions für Java, Node, Docker und semantic-release und müssen somit wenig selbst schreiben.
+- Die Ergebnisse der Pipeline erscheinen direkt im Pull Request und können als Pflicht-Checks für den Merge eingestellt werden.
+
+## Repositorystruktur
+
+In unserer Entwicklung sind ein `main`- und ein `dev`-Branch fest vorgesehen. Für einzelne Bereiche können zusätzlich Feature-Branches angelegt werden.
+
+Der `main`-Branch ist geschützt (protected) und nimmt keine direkten Pushes von Entwickler:innen an. Änderungen gelangen ausschließlich über Pull Requests auf den `main`-Branch. Auf den `dev`-Branch und die Feature-Branches dürfen beliebig viele Commits gepusht werden. Im Regelfall werden Änderungen über den `dev`-Branch in den `main`-Branch übernommen.
+
+## Konzept: Aufbau der Pipeline
+
+<img width="1632" height="1351" alt="Image" src="https://github.com/user-attachments/assets/44931d61-ed45-4173-948f-6f8761c55c7c" />
+
+
+**Erklärungen zu den einzelnen Schritten:**
+
+**Linting**
+Im ersten Schritt wird der Quellcode statisch auf Stil- und Formatierungsfehler sowie auf typische Fehlerquellen geprüft. So wird ein einheitlicher Codestil im gesamten Team sichergestellt und einfache Fehler werden frühzeitig erkannt, noch bevor Tests oder Builds ausgeführt werden. Schlägt das Linting fehl, bricht die Pipeline ab.
+
+**Tests**
+Anschließend werden die automatisierten Tests ausgeführt, insbesondere Unit- und gegebenenfalls Integrationstests. Sie stellen sicher, dass bestehende Funktionalität durch neue Änderungen nicht beeinträchtigt wird. Nur wenn alle Tests erfolgreich sind, wird die Pipeline fortgesetzt. Optional kann hier zusätzlich die Testabdeckung (Code Coverage) erfasst und ausgewertet werden.
+
+**Build**
+Im Build-Schritt wird die Anwendung kompiliert bzw. gebündelt und in eine auslieferbare Form gebracht. Dabei wird überprüft, ob sich der aktuelle Stand fehlerfrei bauen lässt. Die erzeugten Build-Artefakte können für die folgenden Schritte weiterverwendet werden.
+
+**Commitlinting & Semantic Release**
+Per Commitlinting wird geprüft, ob die Commit-Nachrichten einem festgelegten Format entsprechen, in der Regel der Conventional-Commits-Spezifikation (z. B. `feat:`, `fix:`, `chore:`). Auf dieser Grundlage ermittelt Semantic Release automatisch die nächste Versionsnummer nach Semantic Versioning (Major, Minor, Patch), erstellt einen Git-Tag und generiert ein Changelog. Dieser Schritt wird nur auf dem `main`-Branch ausgeführt, sodass Releases ausschließlich aus geprüftem und gemergtem Code entstehen.
+
+**Docker Build & Image Registry**
+Abschließend wird aus der Anwendung ein Docker-Image gebaut und mit der durch Semantic Release ermittelten Versionsnummer getaggt. Das Image wird anschließend in die GitHub Container Registry hochgeladen. Von dort kann es für das Deployment in die jeweiligen Zielumgebungen bezogen werden. Da jedes Image eindeutig versioniert ist, sind Deployments jederzeit nachvollziehbar und lassen sich bei Bedarf auf eine frühere Version zurücksetzen.
+
+
+## Konzept: Continuous Deployment
+
+Bei Continuous Deployment wird jede Änderung, die alle Prüfungen der Pipeline besteht, automatisch ausgerollt. Für unser Projekt planen wir:
+
+- **Staging:** Jeder Merge in `dev` wird automatisch auf eine Testumgebung deployt.
+- **Produktion:** Ein Release aus `main` wird nach manueller Freigabe deployt (Continuous Delivery).
+- **Grundlage:** Die Pipeline erzeugt bereits versionierte Docker-Images in der GitHub Container Registry. Ein Deployment muss diese Images nur noch auf der Zielplattform starten.
+- **Rollback:** Durch die versionierten Images kann jederzeit auf eine frühere Version zurückgewechselt werden.
+
+**Mögliche Zielplattformen**
+
+- **VPS (Virtual Private Server) mit Docker:** Ein einzelner Server, auf dem die Container laufen. Günstig und einfach, Wartung und Sicherheit liegen aber bei uns.
+- **PaaS (Platform as a Service):** Ein Anbieter übernimmt Server, Betrieb und Skalierung, wir stellen nur die Docker-Images bereit. Sehr schnell eingerichtet und wenig Wartungsaufwand, dafür weniger Kontrolle, mit der Nutzung steigende Kosten und Abhängigkeit vom Anbieter.
+- **Kubernetes-Cluster mit Helm Charts (auf eigenen VPS oder als Managed Kubernetes):** Skalierbar und ausfallsicher, aber deutlich komplexer und für ein kleines Projekt eher überdimensioniert.
+
+Für den Anfang würde sich ein VPS, da er sich mit wenig Aufwand an die bestehende Pipeline anbinden lässt.
+
+## Bonus: Erweiterungen der Pipeline
+
+Wir erweitern den geforderten Rahmen um Linting, Commitlinting, Semantic Release und die Bereitstellung unserer Anwendung als Docker-Image.
+
+| Erweiterung | Werkzeug | Nutzen |
+|---|---|---|
+| Linting | --- | Einheitlicher Code-Stil, frühe Fehlererkennung |
+| Commitlinting | --- | Einheitliche Commit-Messages nach Conventional Commits |
+| Semantic Release | semantic-release | Automatische Versionierung, Git-Tags und Release Notes |
+| Docker-Image | Docker Buildx, GHCR | Versionierte Images als Grundlage für das Deployment |
+
 
 # Übung 3: UML & OOD (DDD)
 
