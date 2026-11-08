@@ -1,6 +1,6 @@
 # CityFeedback
 
-Semesteraufgabe im Modul "Moderne Softwareentwicklung"
+Semesteraufgabe im Modul "Moderne Softwareentwicklung" WS 26/27
 
 ## Inhaltsverzeichnis
 - [Übung 1: Einführung in Git](#übung-1-einführung-in-git)
