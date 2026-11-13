@@ -545,10 +545,11 @@ _Abb. 4 : Darstellung der Entitäten und Aggregate Root_
 
 ### Repositories
 
-| Repository | Aggregate | Methoden |
-| :--- | :--- | :--- |
-| **BuergerRepository** | Buerger | `save(Buerger)`<br>`findById(BuergerId): Optional<Buerger>`<br>`existsByEmail(EMail): boolean` |
-| **MeldungRepository** | Meldung | `save(Meldung)`<br>`findById(MeldungId): Optional<Meldung>`<br>`findByMelderId(BuergerId): List<Meldung>` |
+| Repository | Verantwortlichkeit | Beispielmethoden |
+|---|---|---|
+| `MeldungRepository` | Lädt und speichert das vollständige Meldungsaggregat einschließlich Inhalt und Kommentaren. | `save(Meldung)`<br>`findById(MeldungId): Optional<Meldung>`<br>`findByMelderId(BuergerId): List<Meldung>` | 
+| `BuergerRepository` | Lädt und speichert Bürger. | `save(Buerger)`<br>`findById(BuergerId): Optional<Buerger>`<br>`existsByEmail(EMail): boolean`|
+| `BearbeiterRepository` | Lädt und speichert Bearbeiter. | `save(Bearbeiter)`<br>`findById(BearbeiterId): Optional<Bearbeiter>`<br>`existsByEmail(EMail): boolean`|
 
 
 ---
