@@ -1,10 +1,10 @@
 
-# Übung 4
+# Übung 4.1
 
 ## Prompt
 
 Überprüfe meine bisherige Implementierungsstrategie und die Bounded Contexts kritisch.
-<br>*Inhalte wurden als Datei angehängt*
+<br>*Inhalte wurden als Datei angehängt (Readme.md)*
 
 - Identifiziere die wichtigsten Schwachstellen.
 - Gib mindestens drei konkrete Verbesserungsvorschläge.Berücksichtige dabei die Struktur der Domain-Events und die Entwicklungsreihenfolge.
@@ -58,3 +58,66 @@ Moin, damit sind die offenen Punkte geklärt.
 |---|---|
 | **Eine aktuelle Bearbeiterzuordnung; Übernahme möglich** | Die Meldung hält eine optionale `BearbeiterId`. Eine Übernahme ersetzt die bisherige Zuordnung. Eine exklusive Bearbeitungssperre ist nicht erforderlich. **Wer unter welchen Bedingungen übernehmen darf, bleibt noch festzulegen.** |
 | **Phase 1: erfolgreicher Versand im Happy-Path genügt** | Ein einfacher **Nach-Commit-Handler mit Versandadapter** reicht zunächst. Keine Outbox, kein Broker und keine automatische Wiederholung erforderlich. Versandfehler sollten dennoch sichtbar sein; mögliche Nachrichtenverluste bei einem Prozessabbruch bleiben eine bewusst akzeptierte Einschränkung. |
+
+
+---
+
+# Übung 4.2
+
+## Prompt
+
+Erstelle für die Entität Bürger konkrete Testfälle, die die Eigenschaften der Entität umfassen. Entwickle spezifische Beispiele für positive Tests, Grenzfälle sowie fehlerhafte Eingaben. Berücksichtige unterschiedliche Schreibweisen von Namen und inkorrekte Formate bei der Mail. Generiere abschließend die passenden RegEx Ausdrücke für die Programmierung und erkläre deren genaue Funktionsweise.
+
+_die Readme.md wurde vollständig beigefügt (als Datei-Upload)_
+
+---
+## Antwort der LLM
+
+Ich habe mir die Domänenlogik und Struktur aus dem Repository für die Entität `Bürger` angesehen. Für den ersten Schritt deiner Aufgabe generieren wir nun die Testfälle für die Validierung der Bürgereigenschaften (Vorname, Nachname und E-Mail-Adresse).
+
+Hier ist der Vorschlag für die verschiedenen Testfälle und die dazugehörigen regulären Ausdrücke für die Validierung.
+
+### 1. Test-Cases für die Bürger-Validierung
+
+#### Happy-Path-Tests (Gültige Eingaben)
+
+Diese Tests prüfen, ob korrekte Daten akzeptiert werden.
+
+* **Vorname:** "Max", "Anna-Maria", "Jean Luc" (Akzeptiert Buchstaben, Bindestriche und Leerzeichen)
+* **Nachname:** "Mustermann", "von der Vogelweide", "Müller-Lüdenscheidt" (Akzeptiert Buchstaben, Leerzeichen und Bindestriche)
+* **E-Mail:** "max.mustermann@example.com", "anna@domain.co.uk", "name123@sub.domain.org" (Klassische gültige E-Mail-Strukturen)
+
+#### Edge-Cases (Grenzfälle)
+
+Diese Tests prüfen Eingaben, die an den Rändern des Erlaubten liegen oder ungewöhnlich, aber theoretisch gültig sind.
+
+* **Vorname/Nachname:** "O'Connor" (Apostroph), "Björn" (Umlaute), Einbuchstabige Namen wie "M" (falls in der Domäne erlaubt, ansonsten negativer Test).
+* **Vorname/Nachname Länge:** Genau 2 Zeichen, genau die erlaubte Maximallänge (z. B. 50 Zeichen).
+* **E-Mail:** Kurze Domains (z. B. "a@b.com"), Subdomains ("max@sub.domain.com"), Plus-Adressierung ("max+test@example.com").
+
+#### Negative Tests (Ungültige Eingaben)
+
+Diese Tests stellen sicher, dass das System falsche oder böswillige Eingaben ablehnt.
+
+* **Vorname/Nachname (Leer):** `null`, leere Zeichenkette `""`, nur Leerzeichen `"   "`.
+* **Vorname/Nachname (Sonderzeichen/Zahlen):** "Max123", "Anna!", "".
+* **Vorname/Nachname (Länge):** Überschreiten der Maximallänge (z. B. 51 Zeichen, falls 50 das Limit ist).
+* **E-Mail (Formatfehler):** "max.mustermann.example.com" (fehlendes @), "max@.com" (fehlende Domain), "@example.com" (fehlender lokaler Teil), "max@example" (fehlende Top-Level-Domain, je nach Systemanforderung).
+* **E-Mail (Leer):** `null`, `""`, `"  "`.
+
+### 2. Regex-Validierung
+
+Hier sind Vorschläge für reguläre Ausdrücke (Regex), die du in Java für die Validierung nutzen kannst.
+
+* **Vorname / Nachname:**
+  `^[a-zA-ZäöüÄÖÜßéèêáàâíìîóòôúùû]([-' ]?[a-zA-ZäöüÄÖÜßéèêáàâíìîóòôúùû]+)*$`
+  *Erklärung:* Erlaubt Buchstaben (inkl. Umlaute und gängige Akzente). Erlaubt Leerzeichen, Bindestriche und Apostrophe, aber nicht am Anfang oder Ende und nicht direkt hintereinander.
+* **E-Mail-Adresse:**
+  `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+  *Erklärung:* Ein Standard-Regex für E-Mail-Adressen. Erlaubt Buchstaben, Zahlen und bestimmte Sonderzeichen im lokalen Teil. Verlangt ein "@"-Zeichen, eine Domain und eine Top-Level-Domain mit mindestens 2 Buchstaben.
+
+---
+
+## Kritische Bewertung
+
+Die aufgezeigten Testfälle machen durchaus Sinn und entsprechen den vorgebenen der Anforderungen. Allerdings fehlt in dem Szenario die Erstellung der eindeutigen ID. Diese wurde entweder von der LLM nicht korrekt eingeordnet oder schlicht vergessen, da sie in den bereitgestellten Informationen genannt und beschrieben wird. Die LLM hat sich rein auf die Testfälle und die möglichen "Fehleingaben" konzentriert. Die bereitgestellten RegEx Ausdrücke könnten entsprechend der Beschreibung durch die LLm funktionieren. Werden aber entsprechend getestet und angepasst.
