@@ -469,7 +469,7 @@ classDiagram
   }
 
   class Bürger {
-    <<Entity>>
+    <<Aggregate Root>>
     -bürgerId: int
     -email: string
     -vorname: string
@@ -477,7 +477,7 @@ classDiagram
   }
 
   class Bearbeiter {
-    <<Entity>>
+    <<Aggregate Root>>
     -bearbeiterId: int
     -email: string
     -abteilung: string
@@ -529,6 +529,8 @@ classDiagram
 ```
 _Abb. 4 : Darstellung der Entitäten und Aggregate Root_ 
 
+**Aggregate:** Neben `Meldung` sind auch `Bürger` und `Bearbeiter` eigene Aggregate (jeweils nur aus der Aggregate Root bestehend), da sie unabhängig von einer Meldung angelegt, geändert und über ein eigenes Repository geladen werden. Sie gehören zum Bounded Context *Nutzerverwaltung*. Die Meldung verweist auf sie nur über ihre Id (`BuergerId`, `BearbeiterId`) und nicht über Objektreferenzen. In der Meldungsverwaltung ist ein Bearbeiter fachlich „der Zuständige für eine Meldung“, in der Nutzerverwaltung das Benutzerkonto mit Name, E-Mail und Abteilung.
+
 **Statusregeln:** Als einfacher Workflow gilt `EINGEREICHT -> IN_BEARBEITUNG -> KOMMENTIERT -> ERLEDIGT` oder `ABGELEHNT`. Ein erneuter Statuswechsel aus `ERLEDIGT` oder `ABGELEHNT` ist in diesem Entwurf nicht vorgesehen. Die Berechtigung, Status und Kommentare zu ändern, wird zusätzlich im Anwendungsservice geprüft, da sie vom angemeldeten Bearbeiter abhängt.
 
 ---
@@ -570,28 +572,45 @@ Framework: Spring Boot
 
 ### Paketstruktur (Java)
 
-```text
-src/main/java/
-└── de/projekt/meldungssystem/
-    ├── domain/
-    │   ├── model/
-    │   │   ├── Meldung.java
-    │   │   └── Kommentar.java
-    │   ├── repository/
-    │   │   └── MeldungRepository.java
-    │   └── service/
-    │
-    ├── application/
-    │   ├── service/
-    │   │   └── MeldungService.java
-    │   └── dto/
-    │
-    ├── infrastructure/
-    │   └── persistence/
-    │       └── JpaMeldungRepository.java
-    │
-    └── interfaces/
-        └── rest/
-            └── MeldungController.java
+Die Pakete sind zuerst nach **Bounded Context** und darin nach **Schichten** gegliedert. Die Abhängigkeiten zeigen immer nach innen zur Domain; das wird mit ArchUnit getestet (`ArchitekturTest`).
 
+```text
+api/src/main/java/de/vfh/mim/cityfeedback_api/
+├── CityfeedbackApiApplication.java
+├── config/                          Querschnitt (z. B. OpenAPI/Swagger)
+│
+├── nutzerverwaltung/                Bounded Context (Generic)
+│   ├── domain/                      frameworkfrei
+│   │   ├── model/
+│   │   │   ├── bearbeiter/          Aggregat Bearbeiter: Bearbeiter, Abteilung
+│   │   │   └── shared/              Value Objects der Nutzerverwaltung: Id, Vorname, Nachname, Email
+│   │   └── repository/              BearbeiterRepository (Interface)
+│   ├── application/                 Anwendungsfälle
+│   │   ├── command/                 LegeBearbeiterAnCommand, AendereBearbeiterCommand
+│   │   ├── exception/               BearbeiterNichtGefundenException, EmailBereitsVergebenException
+│   │   └── service/                 BearbeiterService (inkl. Prüfung: E-Mail nur einmal vergeben)
+│   ├── infrastructure/              Technik
+│   │   ├── persistence/             JPA-Entity, Mapper, Spring-Data-Repository, Adapter
+│   │   └── testdaten/               Testdaten (nur Profil "dev")
+│   └── interfaces/
+│       └── rest/                    BearbeiterController, ExceptionHandler, dto/ (Request/Response)
+│
+├── meldungsverwaltung/              Bounded Context (Core), noch leer
+│   └── domain/
+└── benachrichtigung/                Bounded Context (Supporting), noch leer
+    └── domain/
 ```
+
+**Abhängigkeitsregeln** (geprüft durch `ArchitekturTest`):
+
+| Schicht | darf verwenden | darf nicht verwenden |
+| :--- | :--- | :--- |
+| `domain` | nur Java | Spring, JPA, Swagger, Bean Validation, andere Schichten |
+| `application` | `domain`, Spring (Transaktionen) | `infrastructure`, `interfaces`, Swagger, Bean Validation |
+| `infrastructure` | `domain`, `application`, Spring, JPA | `interfaces` |
+| `interfaces` | `application`, `domain`, Spring Web, Swagger | – |
+| Bounded Contexts | – | Klassen anderer Bounded Contexts (nur Ids als Werte) |
+
+**Ids:** Jeder Bounded Context hat eine eigene, zentrale `Id`-Klasse für alle seine Aggregate (in der Nutzerverwaltung `nutzerverwaltung.domain.model.shared.Id`). Sie ist eine UUID und wird von der Domain beim Anlegen erzeugt (`Id.neu()`), nicht von der Datenbank. Andere Kontexte importieren diese Klasse nicht, sondern speichern nur den UUID-Wert in ihrer eigenen `Id` (z. B. die Meldung die UUID ihres Bearbeiters).
+
+**Profile:** Ohne Angabe startet die Anwendung im Profil `dev` (H2 mit Testdaten, H2-Konsole). Tests laufen im Profil `test` mit einer eigenen, leeren Datenbank.
