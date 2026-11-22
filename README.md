@@ -360,7 +360,73 @@ _Abb. 2 : Reduziertes Event Storming_
 
 Eine **Meldung** hat einen Lebenszyklus und eine ID. Ein **Kommentar** hat keine und wird über seine Werte einzigartig, gehört fachlich zur Meldung und wird über deren Aggregate Root verwaltet. Status und Kategorie sind kontrollierte Wertebereiche.
 
-![Abbildung 3: Domain-Modell Klassendiagramm](doc/img/uebung_3_domainmodell.png)
+```mermaid
+
+classDiagram
+  class Kommentar {
+    <<Value Object>>
+    betreff
+    text
+    erstellZeitpunkt
+    bearbeiterId
+  }
+
+  class Buerger["Bürger"] {
+    <<Entity>>
+    id
+    nachname
+    vorname
+    email
+  }
+
+  class Meldung {
+    <<Entity>>
+    id
+  }
+
+  class MeldungInhalt {
+    <<Value Object>>
+    betreff
+    text
+    erstellZeitpunkt
+  }
+
+  class Bearbeiter {
+    <<Entity>>
+    id
+    nachname
+    vorname
+    email
+    abteilung
+  }
+
+  class Benachrichtigung {
+    <<Entity>>
+    id
+    neuerStatus
+  }
+
+  class Kategorie {
+    <<Value Object>>
+    wert
+  }
+
+  class Status {
+    <<Value Object>>
+    wert
+  }
+
+  Meldung "1" *-- "1" MeldungInhalt
+  Meldung "1" *-- "1" Kategorie
+  Meldung "1" *-- "1" Status
+  Meldung "1" *-- "0..*" Kommentar : verfügt über
+
+  Bearbeiter "1" --> "0..*" Meldung : bearbeitet
+  Buerger "1" --> "0..*" Meldung : erstellt
+  Benachrichtigung "1" --> "0..*" Kommentar : löst aus
+  Benachrichtigung "1" --> "1" Buerger : erhält
+
+```
 _Abb. 3 : Domain-Modell Klassendiagramm_ 
 
 **Beziehungen:** Ein Bürger kann mehrere Meldungen einreichen. Eine Meldung kann von mehreren Bearbeitern, aber immer nur einer zur Zeit, bearbeitet werden. Der Meldungsinhalt, sowie die Kommentare sind Value Objekts, die in der Entität Meldung zusammengeführt werden. Dazu kommen die Werte aus Kategorie und Status. Ein durch den Bearbeiter erstellter Kommentar löst eine Benachrichtigung an den der Meldung zugeordneten Bürger aus.
@@ -383,8 +449,87 @@ In unserem Fall haben wir drei Bounded Contextes identifiziert und definiert.
 
 Aus den vorangegangenen Informationen haben wir nachfolgende Entitäten und Aggregate Roots erstellt.
 
-![Abbildung 4: Darstellung der Entitäten und Aggregate Root](doc/img/uebung_3_aggregate.png)
+
+```mermaid
+classDiagram
+  class Meldung {
+    <<Aggregate Root>>
+    -MeldungId: int
+    +erstelleMeldung(ersteller: Bürger, kategorie: Kategorie, inhalt: MeldungInhalt): Meldung
+    +updateStatus(neuerStatus: Status): void
+    +kommentieren(ersteller: Bearbeiter, inhalt: Kommentar): void
+    +bearbeiterZuweisen(bearbeiter: Bearbeiter): void
+  }
+
+  class MeldungInhalt {
+    <<Value Object>>
+    -titel: string
+    -inhalt: string
+    -erstellZeitpunkt: datetime
+  }
+
+  class Bürger {
+    <<Aggregate Root>>
+    -bürgerId: int
+    -email: string
+    -vorname: string
+    -nachname: string
+  }
+
+  class Bearbeiter {
+    <<Aggregate Root>>
+    -bearbeiterId: int
+    -email: string
+    -abteilung: string
+    -vorname: string
+    -nachname: string
+  }
+
+  class Kommentar {
+    <<Value Object>>
+    -titel: string
+    -inhalt: string
+    -erstellZeitpunkt: datetime
+    -erstellerId: BearbeiterId
+  }
+
+  class Kategorie {
+    <<enumeration>>
+    VERKEHR
+    UMWELT
+    INFRASTRUKTUR
+    SONSTIGES
+  }
+
+  class Status {
+    <<enumeration>>
+    OFFEN
+    IN_BEARBEITUNG
+    GELÖST
+    ABGELEHNT
+  }
+
+  class MeldungStatusWechsel {
+    <<Domain Event>>
+    -erstellZeitpunkt: datetime
+  }
+
+  Meldung "1" *-- "1" MeldungInhalt : meldungsInhalt
+  Meldung "1" *-- "0..*" Kommentar : kommentarList
+
+  Bürger "1" --> "0..*" Meldung : erstellt
+  Bearbeiter "1" --> "0..*" Meldung : bearbeitet
+
+  Meldung "1" --> "1" Kategorie : kategorie
+  Meldung "1" --> "1" Status : status
+
+  Meldung "1" --> "1" MeldungStatusWechsel : meldung
+  Status "1" --> "1" MeldungStatusWechsel : status
+  Kommentar ..> MeldungStatusWechsel : erzeugt
+```
 _Abb. 4 : Darstellung der Entitäten und Aggregate Root_ 
+
+**Aggregate:** Neben `Meldung` sind auch `Bürger` und `Bearbeiter` eigene Aggregate (jeweils nur aus der Aggregate Root bestehend), da sie unabhängig von einer Meldung angelegt, geändert und über ein eigenes Repository geladen werden. Sie gehören zum Bounded Context *Nutzerverwaltung*. Die Meldung verweist auf sie nur über ihre Id (`BuergerId`, `BearbeiterId`) und nicht über Objektreferenzen. In der Meldungsverwaltung ist ein Bearbeiter fachlich „der Zuständige für eine Meldung“, in der Nutzerverwaltung das Benutzerkonto mit Name, E-Mail und Abteilung.
 
 **Statusregeln:** Als einfacher Workflow gilt `EINGEREICHT -> IN_BEARBEITUNG -> KOMMENTIERT -> ERLEDIGT` oder `ABGELEHNT`. Ein erneuter Statuswechsel aus `ERLEDIGT` oder `ABGELEHNT` ist in diesem Entwurf nicht vorgesehen. Die Berechtigung, Status und Kommentare zu ändern, wird zusätzlich im Anwendungsservice geprüft, da sie vom angemeldeten Bearbeiter abhängt.
 
@@ -402,10 +547,11 @@ _Abb. 4 : Darstellung der Entitäten und Aggregate Root_
 
 ### Repositories
 
-| Repository | Aggregate | Methoden |
-| :--- | :--- | :--- |
-| **BuergerRepository** | Buerger | `save(Buerger)`<br>`findById(BuergerId): Optional<Buerger>`<br>`existsByEmail(EMail): boolean` |
-| **MeldungRepository** | Meldung | `save(Meldung)`<br>`findById(MeldungId): Optional<Meldung>`<br>`findByMelderId(BuergerId): List<Meldung>` |
+| Repository | Verantwortlichkeit | Beispielmethoden |
+|---|---|---|
+| `MeldungRepository` | Lädt und speichert das vollständige Meldungsaggregat einschließlich Inhalt und Kommentaren. | `save(Meldung)`<br>`findById(MeldungId): Optional<Meldung>`<br>`findByMelderId(BuergerId): List<Meldung>` | 
+| `BuergerRepository` | Lädt und speichert Bürger. | `save(Buerger)`<br>`findById(BuergerId): Optional<Buerger>`<br>`existsByEmail(EMail): boolean`|
+| `BearbeiterRepository` | Lädt und speichert Bearbeiter. | `save(Bearbeiter)`<br>`findById(BearbeiterId): Optional<Bearbeiter>`<br>`existsByEmail(EMail): boolean`|
 
 
 ---
@@ -426,28 +572,45 @@ Framework: Spring Boot
 
 ### Paketstruktur (Java)
 
-```text
-src/main/java/
-└── de/projekt/meldungssystem/
-    ├── domain/
-    │   ├── model/
-    │   │   ├── Meldung.java
-    │   │   └── Kommentar.java
-    │   ├── repository/
-    │   │   └── MeldungRepository.java
-    │   └── service/
-    │
-    ├── application/
-    │   ├── service/
-    │   │   └── MeldungService.java
-    │   └── dto/
-    │
-    ├── infrastructure/
-    │   └── persistence/
-    │       └── JpaMeldungRepository.java
-    │
-    └── interfaces/
-        └── rest/
-            └── MeldungController.java
+Die Pakete sind zuerst nach **Bounded Context** und darin nach **Schichten** gegliedert. Die Abhängigkeiten zeigen immer nach innen zur Domain; das wird mit ArchUnit getestet (`ArchitekturTest`).
 
+```text
+api/src/main/java/de/vfh/mim/cityfeedback_api/
+├── CityfeedbackApiApplication.java
+├── config/                          Querschnitt (z. B. OpenAPI/Swagger)
+│
+├── nutzerverwaltung/                Bounded Context (Generic)
+│   ├── domain/                      frameworkfrei
+│   │   ├── model/
+│   │   │   ├── bearbeiter/          Aggregat Bearbeiter: Bearbeiter, Abteilung
+│   │   │   └── shared/              Value Objects der Nutzerverwaltung: Id, Vorname, Nachname, Email
+│   │   └── repository/              BearbeiterRepository (Interface)
+│   ├── application/                 Anwendungsfälle
+│   │   ├── command/                 LegeBearbeiterAnCommand, AendereBearbeiterCommand
+│   │   ├── exception/               BearbeiterNichtGefundenException, EmailBereitsVergebenException
+│   │   └── service/                 BearbeiterService (inkl. Prüfung: E-Mail nur einmal vergeben)
+│   ├── infrastructure/              Technik
+│   │   ├── persistence/             JPA-Entity, Mapper, Spring-Data-Repository, Adapter
+│   │   └── testdaten/               Testdaten (nur Profil "dev")
+│   └── interfaces/
+│       └── rest/                    BearbeiterController, ExceptionHandler, dto/ (Request/Response)
+│
+├── meldungsverwaltung/              Bounded Context (Core), noch leer
+│   └── domain/
+└── benachrichtigung/                Bounded Context (Supporting), noch leer
+    └── domain/
 ```
+
+**Abhängigkeitsregeln** (geprüft durch `ArchitekturTest`):
+
+| Schicht | darf verwenden | darf nicht verwenden |
+| :--- | :--- | :--- |
+| `domain` | nur Java | Spring, JPA, Swagger, Bean Validation, andere Schichten |
+| `application` | `domain`, Spring (Transaktionen) | `infrastructure`, `interfaces`, Swagger, Bean Validation |
+| `infrastructure` | `domain`, `application`, Spring, JPA | `interfaces` |
+| `interfaces` | `application`, `domain`, Spring Web, Swagger | – |
+| Bounded Contexts | – | Klassen anderer Bounded Contexts (nur Ids als Werte) |
+
+**Ids:** Jeder Bounded Context hat eine eigene, zentrale `Id`-Klasse für alle seine Aggregate (in der Nutzerverwaltung `nutzerverwaltung.domain.model.shared.Id`). Sie ist eine UUID und wird von der Domain beim Anlegen erzeugt (`Id.neu()`), nicht von der Datenbank. Andere Kontexte importieren diese Klasse nicht, sondern speichern nur den UUID-Wert in ihrer eigenen `Id` (z. B. die Meldung die UUID ihres Bearbeiters).
+
+**Profile:** Ohne Angabe startet die Anwendung im Profil `dev` (H2 mit Testdaten, H2-Konsole). Tests laufen im Profil `test` mit einer eigenen, leeren Datenbank.
