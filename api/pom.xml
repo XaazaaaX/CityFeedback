@@ -10,7 +10,8 @@
     </parent>
     <groupId>de.vfh.mim</groupId>
     <artifactId>cityfeedback_api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <!-- Wird beim Release von semantic-release per -Drevision=x.y.z gesetzt -->
+    <version>${revision}</version>
     <name>cityfeedback_api</name>
     <description>cityfeedback_api</description>
     <url/>
@@ -27,7 +28,11 @@
         <url/>
     </scm>
     <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
         <java.version>25</java.version>
+        <jacoco.version>0.8.15</jacoco.version>
+        <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+        <checkstyle.version>13.4.2</checkstyle.version>
     </properties>
     <dependencies>
         <dependency>
@@ -98,6 +103,59 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Linting: läuft in der validate-Phase (also bei jedem Build) und direkt per ./mvnw checkstyle:check -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>config/checkstyle/checkstyle.xml</configLocation>
+                    <suppressionsLocation>config/checkstyle/suppressions.xml</suppressionsLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <consoleOutput>true</consoleOutput>
+                    <failOnViolation>true</failOnViolation>
+                    <violationSeverity>warning</violationSeverity>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Testabdeckung: Report unter target/site/jacoco (wird in der CI ausgewertet) -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

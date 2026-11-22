@@ -1,0 +1,52 @@
+# Prüft, ob Commits den Conventional Commits entsprechen
+# (Voraussetzung dafür, dass semantic-release die richtige Version bestimmen kann).
+# Konfiguration: commitlint.config.mjs
+#
+# Geprüft wird dort, wo Commits entstehen:
+#   - in PRs (z. B. feature-Branch -> dev)
+#   - bei direkten Pushes auf dev
+# PRs dev -> main werden übersprungen, weil deren Commits schon auf dem Weg nach dev
+# geprüft wurden (und dev ältere Commits von vor der Einführung der Regeln enthält).
+name: Commit-Lint
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [dev]
+
+permissions:
+  contents: read
+
+jobs:
+  commitlint:
+    name: Commit-Messages prüfen
+    if: github.event_name == 'push' || github.head_ref != 'dev'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout (komplette Historie)
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Node einrichten
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: commitlint installieren
+        run: npm install --no-save --no-audit --no-fund @commitlint/cli@20 @commitlint/config-conventional@20
+
+      - name: Commits prüfen
+        env:
+          FROM: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          TO: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          # Neuer Branch / Force-Push ohne Vorgänger: nur den letzten Commit prüfen
+          if [ -z "$FROM" ] || [ "$FROM" = "0000000000000000000000000000000000000000" ] \
+             || ! git cat-file -e "$FROM^{commit}" 2>/dev/null; then
+            npx commitlint --last --verbose
+          else
+            npx commitlint --from "$FROM" --to "$TO" --verbose
+          fi

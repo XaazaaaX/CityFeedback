@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Node (semantic-release / commitlint) ###
+node_modules/

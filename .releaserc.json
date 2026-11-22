@@ -1,0 +1,49 @@
+{
+  "branches": ["main"],
+  "tagFormat": "v${version}",
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits",
+        "presetConfig": {}
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits",
+        "presetConfig": {
+          "types": [
+            { "type": "feat", "section": "✨ Neue Funktionen" },
+            { "type": "fix", "section": "🐛 Fehlerbehebungen" },
+            { "type": "perf", "section": "⚡ Performance" },
+            { "type": "refactor", "section": "♻️ Refactoring" },
+            { "type": "revert", "section": "⏪ Zurückgenommen" },
+            { "type": "test", "hidden": true },
+            { "type": "docs", "hidden": true },
+            { "type": "style", "hidden": true },
+            { "type": "build", "hidden": true },
+            { "type": "ci", "hidden": true },
+            { "type": "chore", "hidden": true }
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "cd api && chmod +x mvnw && ./mvnw -B -ntp package -DskipTests -Dcheckstyle.skip -Drevision=${nextRelease.version} && cp target/cityfeedback_api-${nextRelease.version}.jar ../cityfeedback-api-${nextRelease.version}.jar",
+        "successCmd": "echo \"version=${nextRelease.version}\" >> \"$GITHUB_OUTPUT\""
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          { "path": "cityfeedback-api-*.jar", "label": "CityFeedback API (JAR)" }
+        ]
+      }
+    ]
+  ]
+}
