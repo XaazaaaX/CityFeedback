@@ -2,6 +2,8 @@
 #
 #   lint    – Checkstyle über Produktiv- und Testcode
 #   build   – kompiliert, führt alle Tests aus (inkl. ArchUnit) und misst die Coverage (JaCoCo)
+#   release-preview – bei PRs und auf dev: semantic-release im Dry-Run, zeigt die nächste
+#             Version und die Release Notes im Job-Summary (es wird nichts veröffentlicht)
 #   release – nur auf main: semantic-release bestimmt anhand der Commit-Messages die nächste
 #             Version, erstellt Git-Tag + GitHub Release (mit Release Notes und JAR)
 #   docker  – baut das Docker-Image; auf main/dev wird es nach GHCR gepusht,
@@ -105,6 +107,57 @@ jobs:
           path: api/target/*.jar
           if-no-files-found: error
           retention-days: 14
+
+  release-preview:
+    name: Release-Vorschau (Dry-Run)
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      # semantic-release prüft auch im Dry-Run, ob es nach main pushen dürfte (pusht aber nichts)
+      contents: write
+    steps:
+      - name: Checkout (komplette Historie inkl. Tags)
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Node ${{ env.NODE_VERSION }} einrichten
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: semantic-release installieren
+        run: >
+          npm install --no-save --no-audit --no-fund
+          semantic-release@25
+          @semantic-release/exec@7
+          conventional-changelog-conventionalcommits@9
+
+      # Den späteren Merge nach main nachstellen, damit die Vorschau die echten Release-Tags kennt
+      - name: Merge nach main simulieren
+        id: sim
+        run: |
+          if git -c user.name="CI" -c user.email="ci@localhost" merge --no-edit --no-ff origin/main; then
+            git checkout --quiet --detach
+            git branch -f main origin/main
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            git merge --abort || true
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## 🔮 Release-Vorschau (Dry-Run)"
+              echo
+              echo "⚠️ Keine Vorschau möglich: Der Stand lässt sich nicht konfliktfrei mit \`main\` zusammenführen."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Release-Vorschau erstellen
+        if: steps.sim.outputs.ok == 'true'
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/scripts/release-preview.mjs
 
   release:
     name: Release (semantic-release)
