@@ -227,7 +227,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
-      contents: read
+      contents: write   # Docker-Abschnitt an das GitHub Release anhängen
       packages: write
     env:
       VERSION: ${{ needs.release.outputs.version }}
@@ -265,6 +265,7 @@ jobs:
 
       # In PRs wird das Image nur gebaut (prüft das Dockerfile), aber nicht gepusht
       - name: Image bauen (und pushen)
+        id: build
         uses: docker/build-push-action@v7
         with:
           context: api
@@ -274,3 +275,32 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # Nach einem Release: Verweis auf das veröffentlichte Image in die Release Notes schreiben
+      - name: Docker-Image im GitHub Release verlinken
+        if: env.VERSION != '' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+          PACKAGE_URL: ${{ github.server_url }}/${{ github.repository }}/pkgs/container/cityfeedback-api
+        run: |
+          TAG="v${VERSION}"
+          MINOR="${VERSION%.*}"
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json body --jq .body > notes.md
+          {
+            echo
+            echo "## 🐳 Docker-Image"
+            echo
+            echo "\`\`\`bash"
+            echo "docker pull ${IMAGE}:${VERSION}"
+            echo "docker run -p 8080:8080 ${IMAGE}:${VERSION}"
+            echo "\`\`\`"
+            echo
+            echo "| Tags | Digest |"
+            echo "|---|---|"
+            echo "| \`${VERSION}\` · \`${MINOR}\` · \`latest\` | \`${DIGEST}\` |"
+            echo
+            echo "📦 [Image auf GitHub Packages](${PACKAGE_URL})"
+          } >> notes.md
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --notes-file notes.md
+          echo "Docker-Abschnitt an Release $TAG angehängt." >> "$GITHUB_STEP_SUMMARY"
