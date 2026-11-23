@@ -47,15 +47,16 @@ def tests_section(target):
                     missed, covered = sums.get(kind, (0, 0))
                     sums[kind] = (missed + int(row[f"{kind}_MISSED"]), covered + int(row[f"{kind}_COVERED"]))
 
-        def pct(kind):
-            missed, covered = sums[kind]
-            total = missed + covered
-            return f"{covered / total * 100:.1f} %" if total else "–"
+        labels = {"LINE": "Zeilen", "BRANCH": "Branches", "METHOD": "Methoden", "INSTRUCTION": "Anweisungen"}
 
         out.append("\n### 📊 Coverage (JaCoCo)\n")
-        out.append("| Zeilen | Branches | Methoden | Anweisungen |")
-        out.append("|---:|---:|---:|---:|")
-        out.append(f"| {pct('LINE')} | {pct('BRANCH')} | {pct('METHOD')} | {pct('INSTRUCTION')} |")
+        out.append("| | Abgedeckt | Nicht abgedeckt | Gesamt | Abdeckung |")
+        out.append("|---|---:|---:|---:|---:|")
+        for kind, label in labels.items():
+            missed, covered = sums[kind]
+            total = missed + covered
+            percent = f"{covered / total * 100:.1f} %" if total else "–"
+            out.append(f"| {label} | {covered} | {missed} | {total} | **{percent}** |")
         out.append("\nDer vollständige HTML-Bericht liegt im Artefakt `test-reports`.")
     return out
 

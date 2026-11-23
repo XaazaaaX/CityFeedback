@@ -56,6 +56,6 @@ In begründeten Einzelfällen kann eine Regel mit `@SuppressWarnings("checkstyle
 
 | Wann | Was passiert |
 |---|---|
-| Pull Request | Checkstyle, Build & Tests mit Coverage, Commit-Lint, Docker-Image wird testweise gebaut |
-| Push auf `dev` | wie oben, Image `ghcr.io/xaazaaax/cityfeedback-api:dev` wird veröffentlicht |
+| Pull Request | Checkstyle, Build & Tests mit Coverage, Commit-Lint, Docker-Image wird testweise gebaut, **Release-Vorschau** (welche Version beim Merge nach `main` entstehen würde, inkl. Release Notes) |
+| Push auf `dev` | wie oben (inkl. Release-Vorschau), Image `ghcr.io/xaazaaax/cityfeedback-api:dev` wird veröffentlicht |
 | Push auf `main` | zusätzlich **semantic-release**: Version bestimmen, Tag `vX.Y.Z` und GitHub Release mit Release Notes und JAR erstellen, Image mit `X.Y.Z`, `X.Y` und `latest` veröffentlichen |
