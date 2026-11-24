@@ -35,5 +35,12 @@ build/
 ### VS Code ###
 .vscode/
 
-### Node (semantic-release / commitlint) ###
+### Eclipse ###
+.metadata
+
+### Node (semantic-release / commitlint, UI) ###
 node_modules/
+
+### Angular ###
+.angular
+

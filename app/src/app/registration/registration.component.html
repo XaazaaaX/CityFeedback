@@ -1,0 +1,67 @@
+<main class="page-content registration-page">
+  <section class="registration-card" aria-labelledby="registration-heading">
+    <h1 id="registration-heading">Registrierung</h1>
+    <p>Erstellen Sie ein Konto, um Anliegen zu melden und den Bearbeitungsstatus zu verfolgen.</p>
+
+    <form #registrationForm="ngForm" (ngSubmit)="sendConfirmationCode(registrationForm)" novalidate>
+      <div class="form-field">
+        <label for="first-name">Vorname</label>
+        <input
+          id="first-name"
+          name="firstName"
+          type="text"
+          autocomplete="given-name"
+          [(ngModel)]="firstName"
+          #firstNameInput="ngModel"
+          required
+        />
+        @if (submitted && firstNameInput.hasError('required')) {
+          <p class="field-error">Bitte geben Sie Ihren Vornamen ein.</p>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="last-name">Nachname</label>
+        <input
+          id="last-name"
+          name="lastName"
+          type="text"
+          autocomplete="family-name"
+          [(ngModel)]="lastName"
+          #lastNameInput="ngModel"
+          required
+        />
+        @if (submitted && lastNameInput.hasError('required')) {
+          <p class="field-error">Bitte geben Sie Ihren Nachnamen ein.</p>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="email">E-Mail-Adresse</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          [(ngModel)]="email"
+          #emailInput="ngModel"
+          email
+          required
+        />
+        @if (submitted && emailInput.hasError('required')) {
+          <p class="field-error">Bitte geben Sie Ihre E-Mail-Adresse ein.</p>
+        } @else if (submitted && emailInput.hasError('email')) {
+          <p class="field-error">Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
+        }
+      </div>
+
+      <button class="button button-primary submit-button" type="submit">
+        Bestätigungscode senden
+      </button>
+
+      @if (confirmationMessage) {
+        <p class="form-status" role="status">{{ confirmationMessage }}</p>
+      }
+    </form>
+  </section>
+</main>
